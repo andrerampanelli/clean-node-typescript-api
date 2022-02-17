@@ -11,7 +11,7 @@ export const internalServerError = (): HttpResponse => ({
   body: new ServerError()
 })
 
-export const requestOk = (data: any): HttpResponse => ({
+export const ok = (data: any): HttpResponse => ({
   statusCode: 200,
   body: data
 })
