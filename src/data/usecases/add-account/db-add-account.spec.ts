@@ -1,14 +1,14 @@
-import { AddAccountRepository, Encrypter, IAccountModel, IAddAccountModel } from './db-add-account-protocols'
+import { AddAccountRepository, IEncrypter, IAccountModel, IAddAccountModel } from './db-add-account-protocols'
 import { DbAddAccount } from './db-add-account'
 
 interface SutTypes {
   sut: DbAddAccount
-  encrypterStub: Encrypter
+  encrypterStub: IEncrypter
   addAccountRepositoryStub: AddAccountRepository
 }
 
-const makeEncrypter = (): Encrypter => {
-  class EncrypterStub implements Encrypter {
+const makeEncrypter = (): IEncrypter => {
+  class EncrypterStub implements IEncrypter {
     async encrypt (value: string): Promise<string> {
       return await new Promise(resolve => resolve('hashed_password'))
     }
