@@ -1,10 +1,12 @@
-import { Collection, MongoClient, ObjectId } from 'mongodb'
+import { Collection, Db, MongoClient, WithId } from 'mongodb'
 
 export const MongoHelper = {
   client: null as MongoClient,
+  db: null as Db,
 
   async connect (uri: string): Promise<void> {
     this.client = await MongoClient.connect(uri)
+    this.db = await this.client.db()
   },
 
   async disconnect (): Promise<void> {
@@ -12,12 +14,11 @@ export const MongoHelper = {
   },
 
   getCollection (name: string): Collection {
-    return this.client.db().collection(name)
+    return this.db.collection(name)
   },
 
-  async map (collection: Collection, id: ObjectId): Promise<any> {
-    const dataById = await collection.findOne({ _id: id })
-    const { _id, ...dataWithoutId } = dataById
+  map (data: WithId<any>): any {
+    const { _id, ...dataWithoutId } = data
     return Object.assign({}, dataWithoutId, { id: _id.toHexString() })
   }
 }
